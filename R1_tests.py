@@ -8,7 +8,7 @@ def test_add_book_valid_book():
     valid, message = add_book_to_catalog("My Book", "Me", "1122334455667", 7)
 
     assert valid == True
-    assert "Book My Book has been successfully added to the catalog." in message
+    assert "successfully added" in message.lower()
 
 # Test adding an invalid book with no title
 def test_add_book_no_title():

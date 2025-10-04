@@ -175,7 +175,7 @@ def calculate_late_fee_for_book(patron_id: str, book_id: int) -> Dict:
             late_book = book
 
     # Calculate how many days overdue
-    days_overdue = ((int(datetime.now().strftime("%Y")) - int(late_book["due_date"].strftime("%Y"))) * 365 + (int(datetime.now().strftime("%j")) - int(late_book["due_date"].strftime("%j"))))
+    days_overdue = ((int(datetime.now().strftime("%Y")) - int(late_book['due_date'].strftime("%Y"))) * 365 + (int(datetime.now().strftime("%j")) - int(late_book['due_date'].strftime("%j"))))
 
     # Calculate fee based on requirements
     if(days_overdue > 7):
