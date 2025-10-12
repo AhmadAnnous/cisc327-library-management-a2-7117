@@ -22,10 +22,7 @@ jobs:
       run: 
         pip install -r requirements.txt
 
-    - name: Set PYTHONPATH to include project root
-      run: echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
-
     - name: Run tests with coverage
       run:
-        PYTHONPATH=. pytest --cov=./library_service.py --cov-report=xml tests/
+        PYTHONPATH=. pytest --cov-report=xml tests/
     
