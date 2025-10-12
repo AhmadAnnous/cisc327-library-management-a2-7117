@@ -4,6 +4,8 @@
 
 This project contains a partial implementation of a Flask-based Library Management System with SQLite database, designed for CISC 327 (Software Quality Assurance) coursework.
 
+![Flash Test](https://github.com/AhmadAnnous/cisc327-library-management-a2-7117/actions/workflow/ci.yml/badge.svg)
+
 Students are provided with:
 
 - [`requirements_specification.md`](requirements_specification.md): Complete requirements document with 7 functional requirements (R1-R7)
