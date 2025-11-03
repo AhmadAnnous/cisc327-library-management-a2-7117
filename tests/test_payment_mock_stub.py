@@ -13,7 +13,7 @@ def test_succesful_payment(mocker):
     mockpaygate.process_payment.return_value = (True, "txn_123456", "Payment of $1.5 processed successfully")
     mocker.patch('services.library_service.calculate_late_fee_for_book', return_value = {'fee_amount': 1.50,
         'days_overdue': 3})
-    mocker.patch('services.library_service.get_book_by_id', return_value = {"book_id" : 1, "title" : "book"})
+    mocker.patch('services.library_service.get_book_by_id', return_value = {"book_id" : 1, "title" : "book", "author" : "me"})
     success, message, trans_id = pay_late_fees("123456", 1, mockpaygate)
 
     assert success == True
@@ -26,7 +26,7 @@ def test_payment_declined_by_gateway(mocker):
     mockpaygate.process_payment.return_value = (False, "txn_123456", "payment not successful")
     mocker.patch('services.library_service.calculate_late_fee_for_book', return_value = {'fee_amount': 1.50,
         'days_overdue': 3})
-    mocker.patch('services.library_service.get_book_by_id', return_value = {"book_id" : 1, "title" : "book"})
+    mocker.patch('services.library_service.get_book_by_id', return_value = {"book_id" : 1, "title" : "book", "author" : "me"})
     success, message, trans_id = pay_late_fees("123456", 1, mockpaygate)
 
     assert success == False
@@ -59,7 +59,7 @@ def test_network_error_exception_handling(mocker):
     mockpaygate = Mock(spec=PaymentGateway)
     mocker.patch('services.library_service.calculate_late_fee_for_book', return_value = {'fee_amount': 1.50,
         'days_overdue': 3})
-    mocker.patch('services.library_service.get_book_by_id', return_value = {"book_id" : 1, "title" : "book"})
+    mocker.patch('services.library_service.get_book_by_id', return_value = {"book_id" : 1, "title" : "book", "author" : "me"})
     mockpaygate.process_payment.return_value = Exception
     success, message, trans_id = pay_late_fees("123456", 1, mockpaygate)
 
