@@ -14,7 +14,7 @@ def test_valid_borrow():
 
 # Test borrowing a book that is not available
 def test_book_not_available():
-    valid2, message3 = borrow_book_by_patron("123456", 1)
+    valid1, message1 = borrow_book_by_patron("123456", 1)
     valid, message = borrow_book_by_patron("123456", 1)
 
     assert valid == False

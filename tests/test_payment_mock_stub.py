@@ -88,12 +88,14 @@ def test_invalid_transaction_ID():
     assert "invalid transaction id" in message.lower()
     mockpaygate.refund_payment.assert_not_called()
 
-# Mocked the PaymentGateway, and gave a neg amount. Asserted that refund_payment wasn't caalled since there was an error.
+# Mocked the PaymentGateway, and gave a neg amount. Asserted that refund_payment wasn't called since there was an error.
 def test_refund_amount_neg():
-    success, message = refund_late_fee_payment("txn_123456", -1.5)
+    mockpaygate = Mock(spec=PaymentGateway)
+    success, message = refund_late_fee_payment("txn_123456", -1.5, mockpaygate)
 
     assert success == False
     assert "amount must be greater than 0" in message.lower()
+    mockpaygate.refund_payment.assert_not_called()
 
 # Same as test_refund_amount_neg but amount is 0.
 def test_refund_amount_zero():
