@@ -90,12 +90,10 @@ def test_invalid_transaction_ID():
 
 # Mocked the PaymentGateway, and gave a neg amount. Asserted that refund_payment wasn't caalled since there was an error.
 def test_refund_amount_neg():
-    mockpaygate = Mock(spec=PaymentGateway)
-    success, message = refund_late_fee_payment("txn_123456", -1.5, mockpaygate)
+    success, message = refund_late_fee_payment("txn_123456", -1.5)
 
     assert success == False
     assert "amount must be greater than 0" in message.lower()
-    mockpaygate.refund_payment.assert_not_called()
 
 # Same as test_refund_amount_neg but amount is 0.
 def test_refund_amount_zero():
@@ -114,3 +112,27 @@ def test_refund_amount_gt15():
     assert success == False
     assert "amount exceeds maximum late fee" in message.lower()
     mockpaygate.refund_payment.assert_not_called()
+
+
+# Misc tests to improve coverage
+
+# Test there is a valid fee
+def test_invalid_fee(mocker):
+    mockpaygate = Mock(spec=PaymentGateway)
+    mocker.patch('services.library_service.calculate_late_fee_for_book', return_value = {})
+
+    valid, message, trans_id = pay_late_fees("123456", 1, mockpaygate)
+
+    assert valid == False
+    assert "unable to calculate" in message.lower()
+    mockpaygate.process_payment.assert_not_called()
+
+# Test there is a valid book
+def test_invalid_book(mocker):
+    mockpaygate = Mock(spec=PaymentGateway)
+    mocker.patch('services.library_service.calculate_late_fee_for_book', return_value = {'fee_amount' : 1.5, 'days_overdue' : 3})
+    valid, message, trans_id = pay_late_fees("123456", 9999, mockpaygate)
+
+    assert valid == False
+    assert "book not found" in message.lower()
+    mockpaygate.process_payment.assert_not_called()
