@@ -225,6 +225,10 @@ def get_patron_status_report(patron_id: str) -> Dict:
     Get status report for a patron.
     TODO: Implement borrow history as per requirements of R7.
     """
+
+    if not patron_id or not patron_id.isdigit() or len(patron_id) != 6:
+        return {}
+
     patron_books = get_patron_borrowed_books(patron_id)
 
     book_and_due_date = []

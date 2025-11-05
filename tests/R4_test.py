@@ -24,9 +24,18 @@ def test_invalid_return_book_not_borrowed():
     assert valid == False
     assert "not borrowed" in message.lower()
 
-# Test checking if error when database has issue.
-def test_database_error(mocker):
+# Test checking if error when database has issue with updating availability.
+def test_database_error_availability(mocker):
     mocker.patch('services.library_service.update_book_availability', return_value = False)
+    bvalid, bmessage = borrow_book_by_patron("123456", 3)
+    valid, message = return_book_by_patron("123456", 3)
+
+    assert valid == False
+    assert "database error" in message.lower()
+
+# Test checking if error when database has issue with updating borrow record.
+def test_databse_error_borrow_record(mocker):
+    mocker.patch('services.library_service.update_borrow_record_return_date', return_value = False)
     bvalid, bmessage = borrow_book_by_patron("123456", 3)
     valid, message = return_book_by_patron("123456", 3)
 

@@ -138,3 +138,21 @@ def test_invalid_book(mocker):
     assert valid == False
     assert "book not found" in message.lower()
     mockpaygate.process_payment.assert_not_called()
+
+def test_refund_failed():
+    mockpaygate = Mock(spec=PaymentGateway)
+    mockpaygate.refund_payment.return_value = False, "failed"
+
+    success, message = refund_late_fee_payment("txn_2", 1.5, mockpaygate)
+
+    assert success == False
+    assert "failed" in message.lower()
+
+def test_refund_error():
+    mockpaygate = Mock(spec=PaymentGateway)
+    mockpaygate.refund_payment.return_value = Exception
+
+    success, message = refund_late_fee_payment("txn_2", 1.5, mockpaygate)
+
+    assert success == False
+    assert "error" in message.lower()
